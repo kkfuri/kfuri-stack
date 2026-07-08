@@ -152,7 +152,6 @@ gstack/
 ├── setup            # One-time setup: build binary + symlink skills
 ├── SKILL.md         # Generated from SKILL.md.tmpl (don't edit directly)
 ├── SKILL.md.tmpl    # Template: edit this, run gen:skill-docs
-├── ETHOS.md         # Builder philosophy (Boil the Ocean, Search Before Building)
 └── package.json     # Build scripts for browse
 ```
 
@@ -543,54 +542,6 @@ After cleanup: 90 findings, 358.1 score, 1.96 score/file.
 Don't chase the number. Fix patterns that represent actual code quality problems.
 Accept findings where the "sloppy" pattern is the correct engineering choice.
 
-## Community PR guardrails
-
-When reviewing or merging community PRs, **always AskUserQuestion** before accepting
-any commit that:
-
-1. **Touches ETHOS.md** — this file is Garry's personal builder philosophy. No edits
-   from external contributors or AI agents, period.
-2. **Removes or softens promotional material** — YC references, founder perspective,
-   and product voice are intentional. PRs that frame these as "unnecessary" or
-   "too promotional" must be rejected.
-3. **Changes Garry's voice** — the tone, humor, directness, and perspective in skill
-   templates, CHANGELOG, and docs are not generic. PRs that rewrite voice to be
-   more "neutral" or "professional" must be rejected.
-
-Even if the agent strongly believes a change improves the project, these three
-categories require explicit user approval via AskUserQuestion. No exceptions.
-No auto-merging. No "I'll just clean this up."
-
-## Checking out PRs from garrytan-agents
-
-When the user says "check out <PR link>" and the PR is from `garrytan-agents/gstack`
-(or any other fork that is NOT a collaborator on `garrytan/gstack`), do NOT just
-`gh pr checkout`. Fork PRs don't receive base-repo secrets (`ANTHROPIC_API_KEY`,
-`OPENAI_API_KEY`, etc.), so the eval/E2E CI jobs fail with empty-env auth errors
-regardless of what's set on the base repo.
-
-**Workflow:** push the branch to `garrytan/gstack` (the base repo) and re-target
-the PR from there.
-
-Concretely, after `gh pr checkout <N>`:
-
-1. Note the original PR number and head branch name.
-2. Push the same branch to the base repo: `git push origin HEAD:<branch-name>`
-   (origin = `garrytan/gstack`, since the worktree is set up with that remote).
-3. Close the fork PR (`gh pr close <N> --comment "moving to base-repo branch for secret access"`).
-4. Open a new PR from the base-repo branch: `gh pr create --base main --head <branch-name>`.
-5. New PR's workflows will get secrets automatically.
-
-Why not fix it on the fork side? `garrytan-agents` isn't a collaborator on
-`garrytan/gstack`. Adding it as a collaborator (option A) or flipping the
-repo-wide "send secrets to fork PRs" toggle (option B) would let secrets reach
-fork PRs from anyone — broader blast radius than just moving this one branch.
-Option C (this section) keeps secret-distribution scope tight.
-
-If the user asks you to skip the move (e.g., "just leave it as a fork PR"),
-respect that — eval CI will fail with empty-env auth, but check-freshness,
-workflow-lint, and windows-tests will still pass on the fork PR.
-
 ## CHANGELOG + VERSION style
 
 **Versioning invariant (workspace-aware ship).** VERSION is a monotonic ordered
@@ -725,9 +676,9 @@ the branch's history. When real work lands, the entry will replace this at /ship
 
 ### Release-summary format (every `## [X.Y.Z]` entry)
 
-Every version entry in `CHANGELOG.md` MUST start with a release-summary section in
-the GStack/Garry voice, one viewport's worth of prose + tables that lands like a
-verdict, not marketing. The itemized changelog (subsections, bullets, files) goes
+Every version entry in `CHANGELOG.md` MUST start with a release-summary section,
+one viewport's worth of prose + tables that lands like a verdict, not marketing.
+The itemized changelog (subsections, bullets, files) goes
 BELOW that summary, separated by a `### Itemized changes` header.
 
 The release-summary section gets read by humans, by the auto-update agent, and by
@@ -806,8 +757,7 @@ infrastructure, or anything where the runtime/framework might have a built-in:
 3. Check official runtime/framework docs
 
 Three layers of knowledge: tried-and-true (Layer 1), new-and-popular (Layer 2),
-first-principles (Layer 3). Prize Layer 3 above all. See ETHOS.md for the full
-builder philosophy.
+first-principles (Layer 3). Prize Layer 3 above all.
 
 ## Local plans
 

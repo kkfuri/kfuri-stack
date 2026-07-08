@@ -73,7 +73,7 @@ const myhost: HostConfig = {
   ],
 
   runtimeRoot: {
-    globalSymlinks: ['bin', 'browse/dist', 'browse/bin', 'gstack-upgrade', 'ETHOS.md'],
+    globalSymlinks: ['bin', 'browse/dist', 'browse/bin', 'gstack-upgrade'],
     globalFiles: { 'review': ['checklist.md', 'TODOS-format.md'] },
   },
 

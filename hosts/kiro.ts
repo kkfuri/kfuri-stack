@@ -33,7 +33,7 @@ const kiro: HostConfig = {
   suppressedResolvers: ['GBRAIN_CONTEXT_LOAD', 'GBRAIN_SAVE_RESULTS'],
 
   runtimeRoot: {
-    globalSymlinks: ['bin', 'browse/dist', 'browse/bin', 'gstack-upgrade', 'ETHOS.md'],
+    globalSymlinks: ['bin', 'browse/dist', 'browse/bin', 'gstack-upgrade'],
     globalFiles: {
       'review': ['checklist.md', 'TODOS-format.md'],
     },
