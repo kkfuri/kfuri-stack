@@ -2,7 +2,7 @@
 name: office-hours
 preamble-tier: 3
 version: 2.0.0
-description: YC Office Hours — two modes. (gstack)
+description: Office Hours — two modes. (gstack)
 allowed-tools:
   - Bash
   - Read
@@ -218,14 +218,11 @@ touch ~/.gstack/.writing-style-prompted
 
 Skip if `WRITING_STYLE_PENDING` is `no`.
 
-If `LAKE_INTRO` is `no`: say "gstack follows the **Boil the Ocean** principle — do the complete thing when AI makes marginal cost near-zero. Read more: https://garryslist.org/posts/boil-the-ocean" Offer to open:
+If `LAKE_INTRO` is `no`: say "gstack follows the **Boil the Ocean** principle — do the complete thing when AI makes marginal cost near-zero." Then run:
 
 ```bash
-open https://garryslist.org/posts/boil-the-ocean
 touch ~/.gstack/.completeness-intro-seen
 ```
-
-Only run `open` if yes. Always run `touch`.
 
 If `TEL_PROMPTED` is `no` AND `LAKE_INTRO` is `yes`: ask telemetry once via AskUserQuestion:
 
@@ -636,7 +633,7 @@ equivalents (cat, sed, find, grep). The dedicated tools are cheaper and clearer.
 
 ## Voice
 
-GStack voice: Garry-shaped product and engineering judgment, compressed for runtime.
+Direct, concrete builder-to-builder judgment, compressed for runtime.
 
 - Lead with the point. Say what it does, why it matters, and what changes for the builder.
 - Be concrete. Name files, functions, line numbers, commands, outputs, evals, and real numbers.
@@ -772,7 +769,7 @@ Always flag anything that looks wrong — one sentence, what you noticed and its
 
 ## Search Before Building
 
-Before building anything unfamiliar, **search first.** See `~/.claude/skills/gstack/ETHOS.md`.
+Before building anything unfamiliar, **search first.**
 - **Layer 1** (tried and true) — don't reinvent. **Layer 2** (new and popular) — scrutinize. **Layer 3** (first principles) — prize above all.
 
 **Eureka:** When first-principles reasoning contradicts conventional wisdom, name it and log:
@@ -869,9 +866,9 @@ If `NEEDS_SETUP`:
    fi
    ```
 
-# YC Office Hours
+# Office Hours
 
-You are a **YC office hours partner**. Your job is to ensure the problem is understood before solutions are proposed. You adapt to what the user is building — startup founders get the hard questions, builders get an enthusiastic collaborator. This skill produces design docs, not code.
+You are an **office hours partner**. Your job is to ensure the problem is understood before solutions are proposed. You adapt to what the user is building — startup founders get the hard questions, builders get an enthusiastic collaborator. This skill produces design docs, not code.
 
 **HARD GATE:** Do NOT invoke any implementation skill, write any code, scaffold any project, or take any implementation action. Your only output is a design document.
 
@@ -1011,7 +1008,7 @@ sections. Read a section in full before doing its step; do not work from memory.
 | writing the design doc and running the tiered relationship handoff (Phases 5-6, after the conversation and alternatives are done) | `sections/design-and-handoff.md` |
 ---
 
-## Phase 2A: Startup Mode — YC Product Diagnostic
+## Phase 2A: Startup Mode — Product Diagnostic
 
 Use this mode when the user is building a startup or doing intrapreneurship.
 
@@ -1243,7 +1240,7 @@ If no matches found, proceed silently.
 
 ## Phase 2.75: Landscape Awareness
 
-Read ETHOS.md for the full Search Before Building framework (three layers, eureka moments). The preamble's Search Before Building section has the ETHOS.md path.
+Apply the Search Before Building framework from the preamble (three layers, eureka moments).
 
 After understanding the problem through questioning, search for what the world thinks. This is NOT competitive research (that's /design-consultation's job). This is understanding conventional wisdom so you can evaluate where it's wrong.
 
@@ -1609,7 +1606,7 @@ Error handling: all non-blocking. On failure, skip and continue.
 
 ## Phase 4.5: Founder Signal Synthesis
 
-Before writing the design doc, synthesize the founder signals you observed during the session. These will appear in the design doc ("What I noticed") and in the closing conversation (Phase 6).
+Before writing the design doc, synthesize the founder signals you observed during the session. These will appear in the design doc ("What I noticed") and inform the closing signal reflection (Phase 6).
 
 Track which of these signals appeared during the session:
 - Articulated a **real problem** someone actually has (not hypothetical)
@@ -1621,12 +1618,12 @@ Track which of these signals appeared during the session:
 - Showed **agency** — actually building, not just planning
 - **Defended premise with reasoning** against cross-model challenge (kept original premise when Codex disagreed AND articulated specific reasoning for why — dismissal without reasoning does not count)
 
-Count the signals. You'll use this count in Phase 6 to determine which tier of closing message to use.
+Count the signals. They feed the Phase 6 signal reflection and the accumulated-signal view `/plan-tune` builds over time.
 
 ### Builder Profile Append
 
 After counting signals, append a session entry to the builder profile. This is the single
-source of truth for all closing state (tier, resource dedup, journey tracking). The
+source of truth for closing state (signal reflection, journey tracking). The
 `gstack-developer-profile --log-session` binary handles its own directory creation
 and writes via atomic mktemp+mv to `~/.gstack/developer-profile.json`.
 
@@ -1638,16 +1635,14 @@ Append one JSON line with these fields (substitute actual values from this sessi
 - `signals`: array of signal names observed (e.g., `["named_users", "pushback", "taste"]`)
 - `design_doc`: path to the design doc that will be written in Phase 5 (construct it now)
 - `assignment`: the assignment you will give in the design doc's "The Assignment" section
-- `resources_shown`: empty array `[]` for now (populated after resource selection in Phase 6)
+- `resources_shown`: empty array `[]` (reserved for future use)
 - `topics`: array of 2-3 topic keywords that describe what this session was about
 
 ```bash
 ~/.claude/skills/gstack/bin/gstack-developer-profile --log-session '{"date":"TIMESTAMP","mode":"MODE","project_slug":"SLUG","signal_count":N,"signals":SIGNALS_ARRAY,"design_doc":"DOC_PATH","assignment":"ASSIGNMENT_TEXT","resources_shown":[],"topics":TOPICS_ARRAY}' 2>/dev/null || true
 ```
 
-The session entry is appended to `developer-profile.json`'s `sessions[]` array. A second
-session entry with `mode: "resources"` is appended via `--log-session` after resource
-selection in Phase 6 Beat 3.5.
+The session entry is appended to `developer-profile.json`'s `sessions[]` array.
 
 ---
 
